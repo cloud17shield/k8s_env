@@ -1,6 +1,7 @@
 # 登陆到k8s
 ssh -L 8001:127.0.0.1:8001 student@202.45.128.135
 ssh -L 8001:127.0.0.1:8001 srk8s@202.45.128.243 -p 10846
+ssh hduser@10.244.1.12
 # misc
 bukectl exec -it podID -- /bin/bash
 hduser student
@@ -49,41 +50,40 @@ done
 
 # ssh loop
 NAME                                IP         
-fyp-68df596454-229gd    10.244.9.4 
-fyp-68df596454-65rtq    10.244.6.3 
-fyp-68df596454-6bpb6    10.244.3.7 
-fyp-68df596454-85hgr    10.244.45.8
-fyp-68df596454-cc8fx    10.244.36.4
-fyp-68df596454-chq4z    10.244.1.3 
-fyp-68df596454-ddfn9    10.244.23.5
-fyp-68df596454-fdcbx    10.244.18.4
-fyp-68df596454-jrkdq   10.244.21.8
-fyp-68df596454-kfb6k    10.244.38.5
-fyp-68df596454-lh2tn   10.244.33.5
-fyp-68df596454-mggnf    10.244.26.6
-fyp-68df596454-ps7fb   10.244.44.5
-fyp-68df596454-rv6k2   10.244.11.4
-fyp-68df596454-t8rrh   10.244.8.4 
-fyp-68df596454-wmgct    10.244.10.4
+fyp-6c7db46cd5-28w8q   1/1     Running   0          78s   10.244.1.12 
+fyp-6c7db46cd5-52vw4   1/1     Running   0          78s   10.244.38.15
+fyp-6c7db46cd5-5fkd2   1/1     Running   0          74s   10.244.23.10
+fyp-6c7db46cd5-7jt88   1/1     Running   0          73s   10.244.36.15
+fyp-6c7db46cd5-7tlxb   1/1     Running   0          78s   10.244.21.16
+fyp-6c7db46cd5-9xp7v   1/1     Running   0          78s   10.244.18.11
+fyp-6c7db46cd5-b2qht   1/1     Running   0          74s   10.244.26.11
+fyp-6c7db46cd5-bmwcv   1/1     Running   0          74s   10.244.8.11 
+fyp-6c7db46cd5-c92sm   1/1     Running   0          73s   10.244.11.11
+fyp-6c7db46cd5-jh2vs   1/1     Running   0          73s   10.244.3.16 
+fyp-6c7db46cd5-r4wcc   1/1     Running   0          78s   10.244.6.8  
+fyp-6c7db46cd5-twtp4   1/1     Running   0          78s   10.244.45.15
+fyp-6c7db46cd5-v4lvg   1/1     Running   0          73s   10.244.10.8 
+fyp-6c7db46cd5-zkfvv   1/1     Running   0          78s   10.244.9.10 
+fyp-6c7db46cd5-zwj2f   1/1     Running   0          78s   10.244.44.10
+fyp-6c7db46cd5-zzhmd   1/1     Running   0          73s   10.244.33.8 
 
 ssh-keygen -t rsa -P ""
-#ssh-copy-id -oStrictHostKeyChecking=accept-new 
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.9.4 
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.6.3 
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.3.7 
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.45.8
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.36.4
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.1.3 
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.23.5
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.18.4
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.21.8
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.38.5
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.33.5
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.26.6
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.44.5
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.11.4
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.8.4 
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.10.4
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.1.12 
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.38.15
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.23.10
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.36.15
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.21.16
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.18.11
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.26.11
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.8.11 
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.11.11
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.3.16 
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.6.8  
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.45.15
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.10.8 
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.9.10 
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.44.10
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.33.8 
 
 # hosts
 /etc/sysctl.conf (/etc/sysctl.d/99-sysctl.conf)
@@ -95,39 +95,39 @@ net.ipv6.conf.lo.disable_ipv6 = 1
 
 sudo vim /etc/hosts
 
-10.244.9.4 G01-01
-10.244.6.3 G01-02
-10.244.3.7 G01-03
-10.244.45.8 G01-04
-10.244.36.4 G01-05
-10.244.1.3 G01-06
-10.244.23.5 G01-07
-10.244.18.4 G01-08
-10.244.21.8 G01-09
-10.244.38.5 G01-10
-10.244.33.5 G01-11
-10.244.26.6 G01-12
-10.244.44.5 G01-13
-10.244.11.4 G01-14
-10.244.8.4 G01-15
-10.244.10.4 G01-16
+10.244.1.12 G01-01
+10.244.38.15 G01-02
+10.244.23.10 G01-03
+10.244.36.15 G01-04
+10.244.21.16 G01-05
+10.244.18.11 G01-06
+10.244.26.11 G01-07
+10.244.8.11 G01-08
+10.244.11.11 G01-09
+10.244.3.16 G01-10
+10.244.6.8 G01-11
+10.244.45.15 G01-12
+10.244.10.8 G01-13
+10.244.9.10 G01-14
+10.244.44.10 G01-15
+10.244.33.8 G01-16
 
-10.244.9.4 fyp-68df596454-229gd
-10.244.6.3 fyp-68df596454-65rtq
-10.244.3.7 fyp-68df596454-6bpb6
-10.244.45.8 fyp-68df596454-85hgr
-10.244.36.4 fyp-68df596454-cc8fx
-10.244.1.3 fyp-68df596454-chq4z
-10.244.23.5 fyp-68df596454-ddfn9
-10.244.18.4 fyp-68df596454-fdcbx
-10.244.21.8 fyp-68df596454-jrkdq
-10.244.38.5 fyp-68df596454-kfb6k
-10.244.33.5 fyp-68df596454-lh2tn
-10.244.26.6 fyp-68df596454-mggnf
-10.244.44.5 fyp-68df596454-ps7fb
-10.244.11.4 fyp-68df596454-rv6k2
-10.244.8.4 fyp-68df596454-t8rrh
-10.244.10.4 fyp-68df596454-wmgct
+10.244.1.12 fyp-6c7db46cd5-28w8q
+10.244.38.15 fyp-6c7db46cd5-52vw4
+10.244.23.10 fyp-6c7db46cd5-5fkd2
+10.244.36.15 fyp-6c7db46cd5-7jt88
+10.244.21.16 fyp-6c7db46cd5-7tlxb
+10.244.18.11 fyp-6c7db46cd5-9xp7v
+10.244.26.11 fyp-6c7db46cd5-b2qht
+10.244.8.11 fyp-6c7db46cd5-bmwcv
+10.244.11.11 fyp-6c7db46cd5-c92sm
+10.244.3.16 fyp-6c7db46cd5-jh2vs
+10.244.6.8 fyp-6c7db46cd5-r4wcc
+10.244.45.15 fyp-6c7db46cd5-twtp4
+10.244.10.8 fyp-6c7db46cd5-v4lvg
+10.244.9.10 fyp-6c7db46cd5-zkfvv
+10.244.44.10 fyp-6c7db46cd5-zwj2f
+10.244.33.8 fyp-6c7db46cd5-zzhmd
 
 ssh -oStrictHostKeyChecking=accept-new G01-01
 logout
@@ -163,7 +163,7 @@ ssh -oStrictHostKeyChecking=accept-new G01-16
 logout
 
 # hadoop
-ssh hduser@10.244.9.4
+ssh hduser@10.244.1.12
 ./copy-hadoop-k8s.sh
 hdfs namenode -format
 start-all.sh
@@ -237,6 +237,8 @@ ssh -Nf -L localhost:10103:10.244.9.4:19888 root@10.244.9.4
 ssh -Nf -L 202.45.128.135:60103:localhost:10103 srk8s@202.45.128.243 -p 10846
 ssh -Nf -L localhost:10104:10.244.9.4:18080 root@10.244.9.4
 ssh -Nf -L 202.45.128.135:60104:localhost:10104 srk8s@202.45.128.243 -p 10846
+ssh -Nf -L localhost:10105:10.244.9.4:8081 root@10.244.9.4
+ssh -Nf -L 202.45.128.135:60105:localhost:10102 srk8s@202.45.128.243 -p 10846
 
 ssh -Nf -L 202.45.128.135:10149:10.42.0.59:50070 10.42.0.59
 ssh -Nf -L 202.45.128.135:10249:10.42.0.59:8088 10.42.0.59
@@ -252,3 +254,22 @@ ssh -Nf -L 202.45.128.135:11150:10.42.1.60:54321 10.42.1.60
 ssh -Nf -L localhost:10105:10.244.9.4:54321 root@10.244.9.4
 ssh -Nf -L 202.45.128.135:60105:localhost:10105 srk8s@202.45.128.243 -p 10846
 
+# flink
+cd /opt/flink-1.8.0/lib/
+wget https://repo.maven.apache.org/maven2/org/apache/flink/flink-shaded-hadoop-2-uber/2.7.5-7.0/flink-shaded-hadoop-2-uber-2.7.5-7.0.jar
+or
+export HADOOP_CLASSPATH=
+export HADOOP_CONF_DIR=
+
+vim flink-conf.yaml
+
+/opt/flink-1.8.0/bin/yarn-session.sh -n 2 -jm 1024 -tm 1024 -d
+bin/yarn-session.sh -n 8 -s 5 -jm 2048 -tm 4096 -nm pinpoint-flink-job
+1、-n 指定 TaskManager 数量
+2、-jm 指定 JobManager 使用内存
+3、-m 指定 JobManager 地址
+4、-tm 指定 TaskManager 使用内存
+5、-D 指定动态参数
+6、-d 客户端分离，指定后 YarnSession 部署到 yarn 之后，客户端会自行关闭。
+7、-j 指定执行 jar 包
+/opt/flink-1.8.0/bin/yarn-session.sh -id application_1463870264508_0029
