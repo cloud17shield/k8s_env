@@ -154,6 +154,8 @@ hdfs namenode -format
 start-all.sh
 mr-jobhistory-daemon.sh start historyserver
 jps
+hdfs dfs -mkdir /images
+hdfs dfs -mkdir /videos
 
 # spark
 hdfs dfs -mkdir /tmp/sparkLog
@@ -161,6 +163,7 @@ vim
 ./copy-spark-k8s.sh 
 hdfs dfs -mkdir /spark_jars
 spark.yarn.jars=hdfs://G01-01:9000/spark_jars/*
+spark.scheduler.mode FAIR
 export SPARK_HOME=/opt/spark-2.4.3-bin-hadoop2.7
 hdfs dfs -put $SPARK_HOME/jars/* /spark_jars
 
@@ -199,10 +202,11 @@ nohup /opt/kafka_2.12-2.2.0/bin/zookeeper-server-start.sh /opt/kafka_2.12-2.2.0/
 nohup /opt/kafka_2.12-2.2.0/bin/kafka-server-start.sh /opt/kafka_2.12-2.2.0/config/server.properties &
 export KAFKA_HOME=/opt/kafka_2.12-2.2.0
 
-/opt/kafka_2.12-2.2.0/bin/kafka-topics.sh --create --bootstrap-server g01-01:9092 --replication-factor 5 --partitions 1 --topic input
-/opt/kafka_2.12-2.2.0/bin/kafka-topics.sh --create --bootstrap-server g01-01:9092 --replication-factor 5 --partitions 1 --topic output
+/opt/kafka_2.12-2.2.0/bin/kafka-topics.sh --create --bootstrap-server g01-01:9092 --replication-factor 5 --partitions 10 --topic input
+/opt/kafka_2.12-2.2.0/bin/kafka-topics.sh --create --bootstrap-server g01-01:9092 --replication-factor 5 --partitions 10 --topic output
 
 /opt/kafka_2.12-2.2.0/bin/kafka-topics.sh --list --bootstrap-server g01-01:9092
+/opt/kafka_2.12-2.2.0/bin/kafka-topics.sh --describe --bootstrap-server g01-01:9092
 
 /opt/kafka_2.12-2.2.0/bin/kafka-console-producer.sh --broker-list g01-01:9092 --topic output
 /opt/kafka_2.12-2.2.0/bin/kafka-console-consumer.sh --bootstrap-server g01-01:9092 --topic output --from-beginning
@@ -212,6 +216,7 @@ sudo apt-get update && sudo apt install -y git
 
 mkdir UI
 cd UI ; git clone https://github.com/cloud17shield/PetPredictor.git
+pip3 install --user django
 nohup python3 /home/hduser/UI/PetPredictor/manage.py runserver 10.244.1.12:54321 &
 
 git clone https://github.com/cloud17shield/DrunkDetection.git
@@ -225,8 +230,8 @@ ssh -Nf -L localhost:10103:10.244.1.12:19888 root@10.244.1.12
 ssh -Nf -L 202.45.128.135:60103:localhost:10103 srk8s@202.45.128.243 -p 10846
 ssh -Nf -L localhost:10104:10.244.1.12:18080 root@10.244.1.12
 ssh -Nf -L 202.45.128.135:60104:localhost:10104 srk8s@202.45.128.243 -p 10846
-ssh -Nf -L localhost:10105:10.244.1.12:8081 root@10.244.1.12
-ssh -Nf -L 202.45.128.135:60105:localhost:10102 srk8s@202.45.128.243 -p 10846
+ssh -Nf -L localhost:10106:10.244.1.12:8081 root@10.244.1.12
+ssh -Nf -L 202.45.128.135:60106:localhost:10102 srk8s@202.45.128.243 -p 10846
 
 ssh -Nf -L 202.45.128.135:10149:10.42.0.59:50070 10.42.0.59
 ssh -Nf -L 202.45.128.135:10249:10.42.0.59:8088 10.42.0.59
@@ -243,15 +248,21 @@ ssh -Nf -L localhost:10105:10.244.1.12:54321 root@10.244.1.12
 ssh -Nf -L 202.45.128.135:60105:localhost:10105 srk8s@202.45.128.243 -p 10846
 
 # flink
-cd /opt/flink-1.8.0/lib/
-wget https://repo.maven.apache.org/maven2/org/apache/flink/flink-shaded-hadoop-2-uber/2.7.5-7.0/flink-shaded-hadoop-2-uber-2.7.5-7.0.jar
+cd /opt/flink-1.8.0/lib/ ; wget https://repo.maven.apache.org/maven2/org/apache/flink/flink-shaded-hadoop-2-uber/2.7.5-7.0/flink-shaded-hadoop-2-uber-2.7.5-7.0.jar
+ssh g01-03 "cd /opt/flink-1.8.0/lib/ ; wget https://repo.maven.apache.org/maven2/org/apache/flink/flink-shaded-hadoop-2-uber/2.7.5-7.0/flink-shaded-hadoop-2-uber-2.7.5-7.0.jar"
 or
 export HADOOP_CLASSPATH=
 export HADOOP_CONF_DIR=
 
-vim flink-conf.yaml
+hdfs dfs -mkdir /flink
+hdfs dfs -mkdir /flink/ha
+hdfs dfs -mkdir /flink/checkpoints
+hdfs dfs -mkdir /flink/completed-jobs
 
-/opt/flink-1.8.0/bin/yarn-session.sh -n 2 -jm 1024 -tm 1024 -d
+vim /opt/flink-1.8.0/conf/flink-conf.yaml
+./copy-flink-k8s.sh
+
+/opt/flink-1.8.0/bin/yarn-session.sh -n 8 -jm 2048 -tm 4096 -nm FlinkOnYarnSession -d
 bin/yarn-session.sh -n 8 -s 5 -jm 2048 -tm 4096 -nm pinpoint-flink-job
 1、-n 指定 TaskManager 数量
 2、-jm 指定 JobManager 使用内存
