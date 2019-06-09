@@ -95,39 +95,39 @@ net.ipv6.conf.lo.disable_ipv6 = 1
 
 sudo vim /etc/hosts
 
-10.244.1.12 G01-01
-10.244.38.15 G01-02
-10.244.23.10 G01-03
-10.244.36.15 G01-04
-10.244.21.16 G01-05
-10.244.18.11 G01-06
-10.244.26.11 G01-07
-10.244.8.11 G01-08
-10.244.11.11 G01-09
-10.244.3.16 G01-10
-10.244.6.8 G01-11
-10.244.45.15 G01-12
-10.244.10.8 G01-13
-10.244.9.10 G01-14
-10.244.44.10 G01-15
-10.244.33.8 G01-16
+10.244.1.12	G01-01
+10.244.38.15	G01-02
+10.244.23.10	G01-03
+10.244.36.15	G01-04
+10.244.21.16	G01-05
+10.244.18.11	G01-06
+10.244.26.11	G01-07
+10.244.8.11	G01-08
+10.244.11.11	G01-09
+10.244.3.16	G01-10
+10.244.6.8	G01-11
+10.244.45.15	G01-12
+10.244.10.8	G01-13
+10.244.9.10	G01-14
+10.244.44.10	G01-15
+10.244.33.8	G01-16
 
-10.244.1.12 fyp-6c7db46cd5-28w8q
-10.244.38.15 fyp-6c7db46cd5-52vw4
-10.244.23.10 fyp-6c7db46cd5-5fkd2
-10.244.36.15 fyp-6c7db46cd5-7jt88
-10.244.21.16 fyp-6c7db46cd5-7tlxb
-10.244.18.11 fyp-6c7db46cd5-9xp7v
-10.244.26.11 fyp-6c7db46cd5-b2qht
-10.244.8.11 fyp-6c7db46cd5-bmwcv
-10.244.11.11 fyp-6c7db46cd5-c92sm
-10.244.3.16 fyp-6c7db46cd5-jh2vs
-10.244.6.8 fyp-6c7db46cd5-r4wcc
-10.244.45.15 fyp-6c7db46cd5-twtp4
-10.244.10.8 fyp-6c7db46cd5-v4lvg
-10.244.9.10 fyp-6c7db46cd5-zkfvv
-10.244.44.10 fyp-6c7db46cd5-zwj2f
-10.244.33.8 fyp-6c7db46cd5-zzhmd
+10.244.1.12	fyp-6c7db46cd5-28w8q
+10.244.38.15	fyp-6c7db46cd5-52vw4
+10.244.23.10	fyp-6c7db46cd5-5fkd2
+10.244.36.15	fyp-6c7db46cd5-7jt88
+10.244.21.16	fyp-6c7db46cd5-7tlxb
+10.244.18.11	fyp-6c7db46cd5-9xp7v
+10.244.26.11	fyp-6c7db46cd5-b2qht
+10.244.8.11	fyp-6c7db46cd5-bmwcv
+10.244.11.11	fyp-6c7db46cd5-c92sm
+10.244.3.16	fyp-6c7db46cd5-jh2vs
+10.244.6.8	fyp-6c7db46cd5-r4wcc
+10.244.45.15	fyp-6c7db46cd5-twtp4
+10.244.10.8	fyp-6c7db46cd5-v4lvg
+10.244.9.10	fyp-6c7db46cd5-zkfvv
+10.244.44.10	fyp-6c7db46cd5-zwj2f
+10.244.33.8	fyp-6c7db46cd5-zzhmd
 
 ssh -oStrictHostKeyChecking=accept-new G01-01
 logout
@@ -224,20 +224,20 @@ sudo apt install -y git
 
 mkdir UI
 git clone https://github.com/cloud17shield/PetPredictor.git
-nohup python3 /home/hduser/UI/PetPredictor/manage.py runserver 10.244.9.4:54321 &
+nohup python3 /home/hduser/UI/PetPredictor/manage.py runserver 10.244.1.12:54321 &
 
 git clone https://github.com/cloud17shield/DrunkDetection.git
 
 # tunnel
-ssh -Nf -L localhost:10101:10.244.9.4:50070 root@10.244.9.4
+ssh -Nf -L localhost:10101:10.244.1.12:50070 root@10.244.1.12
 ssh -Nf -L 202.45.128.135:60101:localhost:10101 srk8s@202.45.128.243 -p 10846
-ssh -Nf -L localhost:10102:10.244.9.4:8088 root@10.244.9.4
+ssh -Nf -L localhost:10102:10.244.1.12:8088 root@10.244.1.12
 ssh -Nf -L 202.45.128.135:60102:localhost:10102 srk8s@202.45.128.243 -p 10846
-ssh -Nf -L localhost:10103:10.244.9.4:19888 root@10.244.9.4
+ssh -Nf -L localhost:10103:10.244.1.12:19888 root@10.244.1.12
 ssh -Nf -L 202.45.128.135:60103:localhost:10103 srk8s@202.45.128.243 -p 10846
-ssh -Nf -L localhost:10104:10.244.9.4:18080 root@10.244.9.4
+ssh -Nf -L localhost:10104:10.244.1.12:18080 root@10.244.1.12
 ssh -Nf -L 202.45.128.135:60104:localhost:10104 srk8s@202.45.128.243 -p 10846
-ssh -Nf -L localhost:10105:10.244.9.4:8081 root@10.244.9.4
+ssh -Nf -L localhost:10105:10.244.1.12:8081 root@10.244.1.12
 ssh -Nf -L 202.45.128.135:60105:localhost:10102 srk8s@202.45.128.243 -p 10846
 
 ssh -Nf -L 202.45.128.135:10149:10.42.0.59:50070 10.42.0.59
@@ -251,7 +251,7 @@ ssh -Nf -L 202.45.128.135:10450:10.42.0.160:8042 10.42.0.160
 ssh -Nf -L 202.45.128.135:10550:10.42.1.60:8042 10.42.1.60
 
 ssh -Nf -L 202.45.128.135:11150:10.42.1.60:54321 10.42.1.60
-ssh -Nf -L localhost:10105:10.244.9.4:54321 root@10.244.9.4
+ssh -Nf -L localhost:10105:10.244.1.12:54321 root@10.244.1.12
 ssh -Nf -L 202.45.128.135:60105:localhost:10105 srk8s@202.45.128.243 -p 10846
 
 # flink
