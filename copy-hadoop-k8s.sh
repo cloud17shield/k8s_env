@@ -194,3 +194,5 @@ echo 'student' | scp /opt/hadoop-2.7.5/etc/hadoop/mapred-site.xml G01-16:mapred-
 echo 'student' | ssh G01-16 "sudo -S su -c 'cp /home/hduser/mapred-site.xml /opt/hadoop-2.7.5/etc/hadoop/mapred-site.xml'"
 echo 'student' | scp /opt/hadoop-2.7.5/etc/hadoop/yarn-site.xml G01-16:yarn-site.xml
 echo 'student' | ssh G01-16 "sudo -S su -c 'cp /home/hduser/yarn-site.xml /opt/hadoop-2.7.5/etc/hadoop/yarn-site.xml'"
+
+echo 'finished'

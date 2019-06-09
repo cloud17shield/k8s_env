@@ -129,41 +129,26 @@ sudo vim /etc/hosts
 10.244.44.10	fyp-6c7db46cd5-zwj2f
 10.244.33.8	fyp-6c7db46cd5-zzhmd
 
-ssh -oStrictHostKeyChecking=accept-new G01-01
-logout
-ssh -oStrictHostKeyChecking=accept-new G01-02
-logout
-ssh -oStrictHostKeyChecking=accept-new G01-03
-logout
-ssh -oStrictHostKeyChecking=accept-new G01-04
-logout
-ssh -oStrictHostKeyChecking=accept-new G01-05
-logout
-ssh -oStrictHostKeyChecking=accept-new G01-06
-logout
-ssh -oStrictHostKeyChecking=accept-new G01-07
-logout
-ssh -oStrictHostKeyChecking=accept-new G01-08
-logout
-ssh -oStrictHostKeyChecking=accept-new G01-09
-logout
-ssh -oStrictHostKeyChecking=accept-new G01-10
-logout
-ssh -oStrictHostKeyChecking=accept-new G01-11
-logout
-ssh -oStrictHostKeyChecking=accept-new G01-12
-logout
-ssh -oStrictHostKeyChecking=accept-new G01-13
-logout
-ssh -oStrictHostKeyChecking=accept-new G01-14
-logout
-ssh -oStrictHostKeyChecking=accept-new G01-15
-logout
-ssh -oStrictHostKeyChecking=accept-new G01-16
-logout
+ssh -oStrictHostKeyChecking=accept-new G01-01 'exit'
+ssh -oStrictHostKeyChecking=accept-new G01-02 'exit'
+ssh -oStrictHostKeyChecking=accept-new G01-03 'exit'
+ssh -oStrictHostKeyChecking=accept-new G01-04 'exit'
+ssh -oStrictHostKeyChecking=accept-new G01-05 'exit'
+ssh -oStrictHostKeyChecking=accept-new G01-06 'exit'
+ssh -oStrictHostKeyChecking=accept-new G01-07 'exit'
+ssh -oStrictHostKeyChecking=accept-new G01-08 'exit'
+ssh -oStrictHostKeyChecking=accept-new G01-09 'exit'
+ssh -oStrictHostKeyChecking=accept-new G01-10 'exit'
+ssh -oStrictHostKeyChecking=accept-new G01-11 'exit'
+ssh -oStrictHostKeyChecking=accept-new G01-12 'exit'
+ssh -oStrictHostKeyChecking=accept-new G01-13 'exit'
+ssh -oStrictHostKeyChecking=accept-new G01-14 'exit'
+ssh -oStrictHostKeyChecking=accept-new G01-15 'exit'
+ssh -oStrictHostKeyChecking=accept-new G01-16 'exit'
 
 # hadoop
 ssh hduser@10.244.1.12
+vim 
 ./copy-hadoop-k8s.sh
 hdfs namenode -format
 start-all.sh
@@ -172,8 +157,11 @@ jps
 
 # spark
 hdfs dfs -mkdir /tmp/sparkLog
+vim 
 ./copy-spark-k8s.sh 
 hdfs dfs -mkdir /spark_jars
+spark.yarn.jars=hdfs://G01-01:9000/spark_jars/*
+export SPARK_HOME=/opt/spark-2.4.3-bin-hadoop2.7
 hdfs dfs -put $SPARK_HOME/jars/* /spark_jars
 
 /opt/spark-2.4.3-bin-hadoop2.7/bin/spark-submit --class org.apache.spark.examples.SparkPi --master yarn --deploy-mode client /opt/spark-2.4.3-bin-hadoop2.7/examples/jars/spark-examples_2.11-2.4.3.jar 100
@@ -209,6 +197,7 @@ zookeeper.connect=g01-01:2181,g01-02:2181,g01-03:2181,g01-04:2181,g01-05:2181,g0
 
 nohup /opt/kafka_2.12-2.2.0/bin/zookeeper-server-start.sh /opt/kafka_2.12-2.2.0/config/zookeeper.properties &
 nohup /opt/kafka_2.12-2.2.0/bin/kafka-server-start.sh /opt/kafka_2.12-2.2.0/config/server.properties &
+export KAFKA_HOME=/opt/kafka_2.12-2.2.0
 
 /opt/kafka_2.12-2.2.0/bin/kafka-topics.sh --create --bootstrap-server g01-01:9092 --replication-factor 5 --partitions 1 --topic input
 /opt/kafka_2.12-2.2.0/bin/kafka-topics.sh --create --bootstrap-server g01-01:9092 --replication-factor 5 --partitions 1 --topic output
@@ -220,10 +209,9 @@ nohup /opt/kafka_2.12-2.2.0/bin/kafka-server-start.sh /opt/kafka_2.12-2.2.0/conf
 
 # git
 sudo apt-get update && sudo apt install -y git
-sudo apt install -y git
 
 mkdir UI
-git clone https://github.com/cloud17shield/PetPredictor.git
+cd UI ; git clone https://github.com/cloud17shield/PetPredictor.git
 nohup python3 /home/hduser/UI/PetPredictor/manage.py runserver 10.244.1.12:54321 &
 
 git clone https://github.com/cloud17shield/DrunkDetection.git
