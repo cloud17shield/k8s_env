@@ -209,7 +209,7 @@ export KAFKA_HOME=/opt/kafka_2.12-2.2.0
 /opt/kafka_2.12-2.2.0/bin/kafka-topics.sh --describe --bootstrap-server g01-01:9092
 
 /opt/kafka_2.12-2.2.0/bin/kafka-console-producer.sh --broker-list g01-01:9092 --topic output
-/opt/kafka_2.12-2.2.0/bin/kafka-console-consumer.sh --bootstrap-server g01-01:9092 --topic output --from-beginning
+/opt/kafka_2.12-2.2.0/bin/kafka-console-consumer.sh --bootstrap-server g01-01:9092 --topic input --from-beginning
 
 # git
 sudo apt-get update && sudo apt install -y git
@@ -247,6 +247,11 @@ ssh -Nf -L 202.45.128.135:11150:10.42.1.60:54321 10.42.1.60
 ssh -Nf -L localhost:10105:10.244.1.12:54321 root@10.244.1.12
 ssh -Nf -L 202.45.128.135:60105:localhost:10105 srk8s@202.45.128.243 -p 10846
 
+ssh -Nf -L localhost:10107:10.244.1.12:12345 root@10.244.1.12
+ssh -Nf -L 202.45.128.135:60107:localhost:10107 srk8s@202.45.128.243 -p 10846
+ssh -Nf -L localhost:10108:10.244.1.12:23333 root@10.244.1.12
+ssh -Nf -L 202.45.128.135:60108:localhost:10108 srk8s@202.45.128.243 -p 10846
+
 # flink
 cd /opt/flink-1.8.0/lib/ ; wget https://repo.maven.apache.org/maven2/org/apache/flink/flink-shaded-hadoop-2-uber/2.7.5-7.0/flink-shaded-hadoop-2-uber-2.7.5-7.0.jar
 ssh g01-03 "cd /opt/flink-1.8.0/lib/ ; wget https://repo.maven.apache.org/maven2/org/apache/flink/flink-shaded-hadoop-2-uber/2.7.5-7.0/flink-shaded-hadoop-2-uber-2.7.5-7.0.jar"
@@ -264,11 +269,31 @@ vim /opt/flink-1.8.0/conf/flink-conf.yaml
 
 /opt/flink-1.8.0/bin/yarn-session.sh -n 8 -jm 2048 -tm 4096 -nm FlinkOnYarnSession -d
 bin/yarn-session.sh -n 8 -s 5 -jm 2048 -tm 4096 -nm pinpoint-flink-job
-1、-n 指定 TaskManager 数量
-2、-jm 指定 JobManager 使用内存
-3、-m 指定 JobManager 地址
-4、-tm 指定 TaskManager 使用内存
-5、-D 指定动态参数
-6、-d 客户端分离，指定后 YarnSession 部署到 yarn 之后，客户端会自行关闭。
-7、-j 指定执行 jar 包
-/opt/flink-1.8.0/bin/yarn-session.sh -id application_1463870264508_0029
+Usage:
+   Optional
+     -D <arg>                        Dynamic properties
+     -d,--detached                   Start detached
+     -jm,--jobManagerMemory <arg>    Memory for JobManager Container with optional unit (default: MB)
+     -nm,--name                      Set a custom name for the application on YARN
+     -q,--query                      Display available YARN resources (memory, cores)
+     -qu,--queue <arg>               Specify YARN queue.
+     -s,--slots <arg>                Number of slots per TaskManager
+     -tm,--taskManagerMemory <arg>   Memory per TaskManager Container with optional unit (default: MB)
+     -z,--zookeeperNamespace <arg>   Namespace to create the Zookeeper sub-paths for HA mode
+     
+/opt/flink-1.8.0/bin/yarn-session.sh -id application_1560069474307_0003
+
+cd /opt/flink-1.8.0 ; ./bin/flink run ./examples/batch/WordCount.jar
+yarn logs -applicationId application_1560069474307_0003
+
+batch.size=20971520
+linger.ms=5
+max.request.size=41943040
+buffer.memory=45000000
+
+fetch.message.max.bytes=41943040
+max.partition.fetch.bytes=41943040
+
+message.max.bytes=41943040
+replica.fetch.max.bytes=41943040
+log.cleanup.policy = delete
