@@ -1,7 +1,7 @@
 # 登陆到k8s
 ssh -L 8001:127.0.0.1:8001 student@202.45.128.135
 ssh -L 8001:127.0.0.1:8001 srk8s@202.45.128.243 -p 10846
-ssh hduser@10.244.1.12
+ssh hduser@10.244.27.7
 # misc
 bukectl exec -it podID -- /bin/bash
 hduser student
@@ -29,11 +29,11 @@ chown -R hduser:hadoop /opt/flink-1.8.0/
 apt-get -y install python3-pip
 su hduser
 pip3 install --user tensorflow keras kafka jieba h5py numpy pandas Pillow py4j six sparkdl imutils dlib opencv-python scikit-learn opencv-contrib-python==3.4.0.12 devicehive==2.1.3 devicehive-webconfig==1.0.2 six==1.11.0 pafy==0.5.3.1 youtube-dl==2017.11.15
-sudo docker commit --author "msc-group01" --message "group1-init" 02d4ed1bf6bc 10.250.164.151:5000/group01-ubuntu:18.04
+sudo docker commit --author "msc-group01" --message "group1-v2" 00fa0927ede8 10.250.164.151:5000/group01-ubuntu-v2:18.04
 sudo docker images
-sudo docker push 10.250.164.151:5000/group01-ubuntu:18.04
+sudo docker push 10.250.164.151:5000/group01-ubuntu-v2:18.04
 # test
-sudo docker run -dit 10.250.164.151:5000/group01-ubuntu:18.04
+sudo docker run -dit 10.250.164.151:5000/group01-ubuntu-v2:18.04
 # =====================
 cd 9k8s/7305
 vim mscgroup01.yaml
@@ -50,40 +50,40 @@ done
 
 # ssh loop
 NAME                                IP         
-fyp-6c7db46cd5-28w8q   1/1     Running   0          78s   10.244.1.12 
-fyp-6c7db46cd5-52vw4   1/1     Running   0          78s   10.244.38.15
-fyp-6c7db46cd5-5fkd2   1/1     Running   0          74s   10.244.23.10
-fyp-6c7db46cd5-7jt88   1/1     Running   0          73s   10.244.36.15
-fyp-6c7db46cd5-7tlxb   1/1     Running   0          78s   10.244.21.16
-fyp-6c7db46cd5-9xp7v   1/1     Running   0          78s   10.244.18.11
-fyp-6c7db46cd5-b2qht   1/1     Running   0          74s   10.244.26.11
-fyp-6c7db46cd5-bmwcv   1/1     Running   0          74s   10.244.8.11 
-fyp-6c7db46cd5-c92sm   1/1     Running   0          73s   10.244.11.11
-fyp-6c7db46cd5-jh2vs   1/1     Running   0          73s   10.244.3.16 
-fyp-6c7db46cd5-r4wcc   1/1     Running   0          78s   10.244.6.8  
-fyp-6c7db46cd5-twtp4   1/1     Running   0          78s   10.244.45.15
-fyp-6c7db46cd5-v4lvg   1/1     Running   0          73s   10.244.10.8 
-fyp-6c7db46cd5-zkfvv   1/1     Running   0          78s   10.244.9.10 
-fyp-6c7db46cd5-zwj2f   1/1     Running   0          78s   10.244.44.10
-fyp-6c7db46cd5-zzhmd   1/1     Running   0          73s   10.244.33.8 
+fyp-78db6546ff-28ppc   1/1     Running   0          11m     10.244.27.7 
+fyp-78db6546ff-4c7f5   1/1     Running   0          7m2s    10.244.35.8 
+fyp-78db6546ff-52vrh   1/1     Running   0          7m9s    10.244.26.13
+fyp-78db6546ff-6vj4s   1/1     Running   0          5m38s   10.244.13.7 
+fyp-78db6546ff-7jr5n   1/1     Running   0          6m59s   10.244.11.13
+fyp-78db6546ff-djxqq   1/1     Running   0          11m     10.244.36.20
+fyp-78db6546ff-gmtmw   1/1     Running   0          11m     10.244.18.13
+fyp-78db6546ff-gs6lv   1/1     Running   0          11m     10.244.43.14
+fyp-78db6546ff-k894l   1/1     Running   0          7m13s   10.244.21.17
+fyp-78db6546ff-lrgxm   1/1     Running   0          6m56s   10.244.16.3 
+fyp-78db6546ff-mt4vr   1/1     Running   0          7m16s   10.244.14.6 
+fyp-78db6546ff-p58tw   1/1     Running   0          11m     10.244.38.19
+fyp-78db6546ff-pmxv4   1/1     Running   0          11m     10.244.5.9  
+fyp-78db6546ff-qn7qg   1/1     Running   0          6m45s   10.244.19.7 
+fyp-78db6546ff-r4wk5   1/1     Running   0          10m     10.244.3.18 
+fyp-78db6546ff-r9psl   1/1     Running   0          10m     10.244.20.5 
 
 ssh-keygen -t rsa -P ""
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.1.12 
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.38.15
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.23.10
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.36.16
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.21.16
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.18.11
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.26.11
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.8.11 
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.11.11
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.3.16 
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.6.8  
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.45.15
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.10.8 
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.9.10 
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.44.10
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.33.8 
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.27.7 
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.35.8 
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.26.13
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.13.7 
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.11.13
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.36.20
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.18.13
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.43.14
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.21.17
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.16.3 
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.14.6 
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.38.19
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.5.9  
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.19.7 
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.3.18 
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.20.5 
 
 # hosts
 /etc/sysctl.conf (/etc/sysctl.d/99-sysctl.conf)
@@ -95,39 +95,39 @@ net.ipv6.conf.lo.disable_ipv6 = 1
 
 sudo vim /etc/hosts
 
-10.244.1.12	G01-01
-10.244.38.15	G01-02
-10.244.23.10	G01-03
-10.244.36.15	G01-04
-10.244.21.16	G01-05
-10.244.18.11	G01-06
-10.244.26.11	G01-07
-10.244.8.11	G01-08
-10.244.11.11	G01-09
-10.244.3.16	G01-10
-10.244.6.8	G01-11
-10.244.45.15	G01-12
-10.244.10.8	G01-13
-10.244.9.10	G01-14
-10.244.44.10	G01-15
-10.244.33.8	G01-16
+10.244.27.7	G01-01
+10.244.35.8	G01-02
+10.244.26.13	G01-03
+10.244.13.7	G01-04
+10.244.11.13	G01-05
+10.244.36.20	G01-06
+10.244.18.13	G01-07
+10.244.43.14	G01-08
+10.244.21.17	G01-09
+10.244.16.3	G01-10
+10.244.14.6	G01-11
+10.244.38.19	G01-12
+10.244.5.9	G01-13
+10.244.19.7	G01-14
+10.244.3.18	G01-15
+10.244.20.5	G01-16
 
-10.244.1.12	fyp-6c7db46cd5-28w8q
-10.244.38.15	fyp-6c7db46cd5-52vw4
-10.244.23.10	fyp-6c7db46cd5-5fkd2
-10.244.36.15	fyp-6c7db46cd5-7jt88
-10.244.21.16	fyp-6c7db46cd5-7tlxb
-10.244.18.11	fyp-6c7db46cd5-9xp7v
-10.244.26.11	fyp-6c7db46cd5-b2qht
-10.244.8.11	fyp-6c7db46cd5-bmwcv
-10.244.11.11	fyp-6c7db46cd5-c92sm
-10.244.3.16	fyp-6c7db46cd5-jh2vs
-10.244.6.8	fyp-6c7db46cd5-r4wcc
-10.244.45.15	fyp-6c7db46cd5-twtp4
-10.244.10.8	fyp-6c7db46cd5-v4lvg
-10.244.9.10	fyp-6c7db46cd5-zkfvv
-10.244.44.10	fyp-6c7db46cd5-zwj2f
-10.244.33.8	fyp-6c7db46cd5-zzhmd
+10.244.27.7	fyp-78db6546ff-28ppc
+10.244.35.8	fyp-78db6546ff-4c7f5
+10.244.26.13	fyp-78db6546ff-52vrh
+10.244.13.7	fyp-78db6546ff-6vj4s
+10.244.11.13	fyp-78db6546ff-7jr5n
+10.244.36.20	fyp-78db6546ff-djxqq
+10.244.18.13	fyp-78db6546ff-gmtmw
+10.244.43.14	fyp-78db6546ff-gs6lv
+10.244.21.17	fyp-78db6546ff-k894l
+10.244.16.3	fyp-78db6546ff-lrgxm
+10.244.14.6	fyp-78db6546ff-mt4vr
+10.244.38.19	fyp-78db6546ff-p58tw
+10.244.5.9	fyp-78db6546ff-pmxv4
+10.244.19.7	fyp-78db6546ff-qn7qg
+10.244.3.18	fyp-78db6546ff-r4wk5
+10.244.20.5	fyp-78db6546ff-r9psl
 
 ssh -oStrictHostKeyChecking=accept-new G01-01 'exit'
 ssh -oStrictHostKeyChecking=accept-new G01-02 'exit'
@@ -147,7 +147,7 @@ ssh -oStrictHostKeyChecking=accept-new G01-15 'exit'
 ssh -oStrictHostKeyChecking=accept-new G01-16 'exit'
 
 # hadoop
-ssh hduser@10.244.1.12
+ssh hduser@10.244.27.7 
 vim 
 ./copy-hadoop-k8s.sh
 hdfs namenode -format
