@@ -13,7 +13,7 @@ kubectl get pods -o wide
 sudo docker images
 sudo docker run -dit 10.250.164.151:5000/msc-ubuntu-v2:18.04
 sudo docker container ls
-sudo docker exec -it 02d4ed1bf6bc bash
+sudo docker exec -it 00fa0927ede8 bash
 cd /opt
 wget http://ftp.cuhk.edu.hk/pub/packages/apache.org/kafka/2.2.0/kafka_2.12-2.2.0.tgz
 wget http://mirrors.tuna.tsinghua.edu.cn/apache/flink/flink-1.8.0/flink-1.8.0-bin-scala_2.12.tgz
@@ -71,7 +71,7 @@ ssh-keygen -t rsa -P ""
 ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.1.12 
 ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.38.15
 ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.23.10
-ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.36.15
+ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.36.16
 ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.21.16
 ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.18.11
 ssh-copy-id -oStrictHostKeyChecking=accept-new 10.244.26.11
@@ -205,11 +205,12 @@ export KAFKA_HOME=/opt/kafka_2.12-2.2.0
 /opt/kafka_2.12-2.2.0/bin/kafka-topics.sh --create --bootstrap-server g01-01:9092 --replication-factor 5 --partitions 10 --topic input
 /opt/kafka_2.12-2.2.0/bin/kafka-topics.sh --create --bootstrap-server g01-01:9092 --replication-factor 5 --partitions 10 --topic output
 
+/opt/kafka_2.12-2.2.0/bin/kafka-topics.sh --zookeeper g01-01:2181 --delete --topic output
 /opt/kafka_2.12-2.2.0/bin/kafka-topics.sh --list --bootstrap-server g01-01:9092
 /opt/kafka_2.12-2.2.0/bin/kafka-topics.sh --describe --bootstrap-server g01-01:9092
 
-/opt/kafka_2.12-2.2.0/bin/kafka-console-producer.sh --broker-list g01-01:9092 --topic output
-/opt/kafka_2.12-2.2.0/bin/kafka-console-consumer.sh --bootstrap-server g01-01:9092 --topic input --from-beginning
+/opt/kafka_2.12-2.2.0/bin/kafka-console-producer.sh --broker-list g01-01:9092 --topic input
+/opt/kafka_2.12-2.2.0/bin/kafka-console-consumer.sh --bootstrap-server g01-01:9092 --topic output --from-beginning
 
 # git
 sudo apt-get update && sudo apt install -y git
@@ -251,6 +252,9 @@ ssh -Nf -L localhost:10107:10.244.1.12:12345 root@10.244.1.12
 ssh -Nf -L 202.45.128.135:60107:localhost:10107 srk8s@202.45.128.243 -p 10846
 ssh -Nf -L localhost:10108:10.244.1.12:23333 root@10.244.1.12
 ssh -Nf -L 202.45.128.135:60108:localhost:10108 srk8s@202.45.128.243 -p 10846
+
+ssh -Nf -L localhost:10109:10.244.1.12:80 root@10.244.1.12
+ssh -Nf -L 202.45.128.135:60109:localhost:10109 srk8s@202.45.128.243 -p 10846
 
 # flink
 cd /opt/flink-1.8.0/lib/ ; wget https://repo.maven.apache.org/maven2/org/apache/flink/flink-shaded-hadoop-2-uber/2.7.5-7.0/flink-shaded-hadoop-2-uber-2.7.5-7.0.jar
@@ -297,3 +301,19 @@ max.partition.fetch.bytes=41943040
 message.max.bytes=41943040
 replica.fetch.max.bytes=41943040
 log.cleanup.policy = delete
+
+echo 'log.message.timestamp.type=CreateTime' >> /opt/kafka_2.12-2.2.0/config/server.properties
+
+pip3 install --user systemml
+sudo apt install -y openmpi-bin
+pip3 install --user horovod
+pip3 install --user tensorflow==1.5.0
+pip3 install --user tensorframes tensorflowonspark pypandoc pyspark
+pip3 install --user https://github.com/OlafenwaMoses/ImageAI/releases/download/2.0.3/imageai-2.0.3-py3-none-any.whl
+
+from kafka import KafkaConsumer
+consumer = KafkaConsumer('input', group_id='test-consumer-group', bootstrap_servers='g01-01:9092')
+for msg in consumer:
+	print (len(msg), len(msg.value), msg.key)
+	
+	
