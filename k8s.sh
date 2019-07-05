@@ -173,7 +173,8 @@ hdfs dfs -put $SPARK_HOME/jars/* /spark_jars
 
 # kafka
 cat /opt/tmp/zookeeper/myid
-echo '16' >> /opt/tmp/zookeeper/myid
+echo '16' > /opt/tmp/zookeeper/myid
+cat /opt/tmp/zookeeper/myid
 
 vim /opt/kafka_2.12-2.2.0/config/zookeeper.properties
 
@@ -202,8 +203,8 @@ nohup /opt/kafka_2.12-2.2.0/bin/zookeeper-server-start.sh /opt/kafka_2.12-2.2.0/
 nohup /opt/kafka_2.12-2.2.0/bin/kafka-server-start.sh /opt/kafka_2.12-2.2.0/config/server.properties &
 export KAFKA_HOME=/opt/kafka_2.12-2.2.0
 
-/opt/kafka_2.12-2.2.0/bin/kafka-topics.sh --create --bootstrap-server g01-01:9092 --replication-factor 5 --partitions 10 --topic input
-/opt/kafka_2.12-2.2.0/bin/kafka-topics.sh --create --bootstrap-server g01-01:9092 --replication-factor 5 --partitions 10 --topic output
+/opt/kafka_2.12-2.2.0/bin/kafka-topics.sh --create --bootstrap-server g01-01:9092 --replication-factor 5 --partitions 15 --topic input
+/opt/kafka_2.12-2.2.0/bin/kafka-topics.sh --create --bootstrap-server g01-01:9092 --replication-factor 5 --partitions 15 --topic output
 
 /opt/kafka_2.12-2.2.0/bin/kafka-topics.sh --zookeeper g01-01:2181 --delete --topic output
 /opt/kafka_2.12-2.2.0/bin/kafka-topics.sh --list --bootstrap-server g01-01:9092
@@ -218,20 +219,20 @@ sudo apt-get update && sudo apt install -y git
 mkdir UI
 cd UI ; git clone https://github.com/cloud17shield/PetPredictor.git
 pip3 install --user django
-nohup python3 /home/hduser/UI/PetPredictor/manage.py runserver 10.244.1.12:54321 &
+nohup python3 /home/hduser/UI/PetPredictor/manage.py runserver 10.244.27.7:54321 &
 
 git clone https://github.com/cloud17shield/DrunkDetection.git
 
 # tunnel
-ssh -Nf -L localhost:10101:10.244.1.12:50070 root@10.244.1.12
+ssh -Nf -L localhost:10101:10.244.27.7:50070 root@10.244.27.7
 ssh -Nf -L 202.45.128.135:60101:localhost:10101 srk8s@202.45.128.243 -p 10846
-ssh -Nf -L localhost:10102:10.244.1.12:8088 root@10.244.1.12
+ssh -Nf -L localhost:10102:10.244.27.7:8088 root@10.244.27.7
 ssh -Nf -L 202.45.128.135:60102:localhost:10102 srk8s@202.45.128.243 -p 10846
-ssh -Nf -L localhost:10103:10.244.1.12:19888 root@10.244.1.12
+ssh -Nf -L localhost:10103:10.244.27.7:19888 root@10.244.27.7
 ssh -Nf -L 202.45.128.135:60103:localhost:10103 srk8s@202.45.128.243 -p 10846
-ssh -Nf -L localhost:10104:10.244.1.12:18080 root@10.244.1.12
+ssh -Nf -L localhost:10104:10.244.27.7:18080 root@10.244.27.7
 ssh -Nf -L 202.45.128.135:60104:localhost:10104 srk8s@202.45.128.243 -p 10846
-ssh -Nf -L localhost:10106:10.244.1.12:8081 root@10.244.1.12
+ssh -Nf -L localhost:10106:10.244.27.7:8081 root@10.244.27.7
 ssh -Nf -L 202.45.128.135:60106:localhost:10102 srk8s@202.45.128.243 -p 10846
 
 ssh -Nf -L 202.45.128.135:10149:10.42.0.59:50070 10.42.0.59
@@ -244,16 +245,15 @@ ssh -Nf -L 202.45.128.135:10549:10.42.1.91:8042 10.42.1.91
 ssh -Nf -L 202.45.128.135:10450:10.42.0.160:8042 10.42.0.160
 ssh -Nf -L 202.45.128.135:10550:10.42.1.60:8042 10.42.1.60
 
-ssh -Nf -L 202.45.128.135:11150:10.42.1.60:54321 10.42.1.60
-ssh -Nf -L localhost:10105:10.244.1.12:54321 root@10.244.1.12
+ssh -Nf -L localhost:10105:10.244.27.7:54321 root@10.244.27.7
 ssh -Nf -L 202.45.128.135:60105:localhost:10105 srk8s@202.45.128.243 -p 10846
 
-ssh -Nf -L localhost:10107:10.244.1.12:12345 root@10.244.1.12
+ssh -Nf -L localhost:10107:10.244.27.7:12345 root@10.244.27.7
 ssh -Nf -L 202.45.128.135:60107:localhost:10107 srk8s@202.45.128.243 -p 10846
-ssh -Nf -L localhost:10108:10.244.1.12:23333 root@10.244.1.12
+ssh -Nf -L localhost:10108:10.244.27.7:23333 root@10.244.27.7
 ssh -Nf -L 202.45.128.135:60108:localhost:10108 srk8s@202.45.128.243 -p 10846
 
-ssh -Nf -L localhost:10109:10.244.1.12:80 root@10.244.1.12
+ssh -Nf -L localhost:10109:10.244.27.7:80 root@10.244.27.7
 ssh -Nf -L 202.45.128.135:60109:localhost:10109 srk8s@202.45.128.243 -p 10846
 
 # flink
