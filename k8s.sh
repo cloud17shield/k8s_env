@@ -167,6 +167,8 @@ spark.scheduler.mode FAIR
 export SPARK_HOME=/opt/spark-2.4.3-bin-hadoop2.7
 hdfs dfs -put $SPARK_HOME/jars/* /spark_jars
 
+/opt/spark-2.4.3-bin-hadoop2.7/sbin/start-history-server.sh
+
 /opt/spark-2.4.3-bin-hadoop2.7/bin/spark-submit --class org.apache.spark.examples.SparkPi --master yarn --deploy-mode client /opt/spark-2.4.3-bin-hadoop2.7/examples/jars/spark-examples_2.11-2.4.3.jar 100
 
 /opt/spark-2.4.3-bin-hadoop2.7/bin/spark-submit --class org.apache.spark.examples.SparkPi --master yarn --deploy-mode cluster /opt/spark-2.4.3-bin-hadoop2.7/examples/jars/spark-examples_2.11-2.4.3.jar 100
@@ -198,6 +200,10 @@ server.16=g01-16:2888:3888
 vim /opt/kafka_2.12-2.2.0/config/server.properties
 
 zookeeper.connect=g01-01:2181,g01-02:2181,g01-03:2181,g01-04:2181,g01-05:2181,g01-06:2181,g01-07:2181,g01-08:2181,g01-09:2181,g01-10:2181,g01-11:2181,g01-12:2181,g01-13:2181,g01-14:2181,g01-15:2181,g01-16:2181
+
+/opt/kafka_2.12-2.2.0/bin/zookeeper-server-stop.sh
+/opt/kafka_2.12-2.2.0/bin/kafka-server-stop.sh
+sudo rm -rf /opt/tmp/kafka-logs/*
 
 nohup /opt/kafka_2.12-2.2.0/bin/zookeeper-server-start.sh /opt/kafka_2.12-2.2.0/config/zookeeper.properties &
 nohup /opt/kafka_2.12-2.2.0/bin/kafka-server-start.sh /opt/kafka_2.12-2.2.0/config/server.properties &
