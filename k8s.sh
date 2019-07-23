@@ -238,8 +238,8 @@ ssh -Nf -L localhost:10103:10.244.27.7:19888 root@10.244.27.7
 ssh -Nf -L 202.45.128.135:60103:localhost:10103 srk8s@202.45.128.243 -p 10846
 ssh -Nf -L localhost:10104:10.244.27.7:18080 root@10.244.27.7
 ssh -Nf -L 202.45.128.135:60104:localhost:10104 srk8s@202.45.128.243 -p 10846
-ssh -Nf -L localhost:10106:10.244.27.7:8081 root@10.244.27.7
-ssh -Nf -L 202.45.128.135:60106:localhost:10102 srk8s@202.45.128.243 -p 10846
+ssh -Nf -L localhost:10106:10.244.27.7:4040 root@10.244.27.7
+ssh -Nf -L 202.45.128.135:60106:localhost:10106 srk8s@202.45.128.243 -p 10846
 
 ssh -Nf -L 202.45.128.135:10149:10.42.0.59:50070 10.42.0.59
 ssh -Nf -L 202.45.128.135:10249:10.42.0.59:8088 10.42.0.59
@@ -309,6 +309,7 @@ replica.fetch.max.bytes=41943040
 log.cleanup.policy = delete
 
 echo 'log.message.timestamp.type=CreateTime' >> /opt/kafka_2.12-2.2.0/config/server.properties
+sudo rm -rf /tmp/hsperfdata_hduser/*
 
 pip3 install --user systemml
 sudo apt install -y openmpi-bin
@@ -320,6 +321,6 @@ pip3 install --user https://github.com/OlafenwaMoses/ImageAI/releases/download/2
 from kafka import KafkaConsumer
 consumer = KafkaConsumer('input', group_id='test-consumer-group', bootstrap_servers='g01-01:9092')
 for msg in consumer:
-	print (len(msg), len(msg.value), msg.key)
+	print (len(msg), len(msg.value), msg.key, msg.timestamp, int(msg.timestamp)-int(msg.key.decode('utf-8')))
 	
 	
